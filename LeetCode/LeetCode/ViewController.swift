@@ -169,13 +169,75 @@ class ViewController: NSViewController {
     /// - Description 时间复杂度: O(N^2) 空间复杂度: O(1)
     func rotate_3(_ matrix: inout [[Int]]) {
         let size = matrix.count
-        for i in 0..<(size/2) {
-            for j in 0..<((size+1)/2) {
+                
+        // 水平翻转
+        for i in 0..<size/2 {
+            for j in 0..<size {
                 var temp = matrix[i][j]
-                matrix[i][j] = matrix[size-j-1][i]
-                matrix[size-j-1][i] = matrix[size-i-1][size-j-1]
-                matrix[size-i-1][size-j-1] = matrix[j][size-i-1]
-                matrix[j][size-i-1] = temp
+                matrix[i][j] = matrix[size-i-1][j]
+                matrix[size-i-1][j] = temp
+            }
+        }
+        
+        // 主对角线翻转
+        for i in 0..<size {
+            for j in 0...i {
+                var temp = matrix[i][j]
+                matrix[i][j] = matrix[j][i]
+                matrix[j][i] = temp
+            }
+        }
+    }
+    
+    
+    //  MARK: 翻转图像
+    /// - Parameter image: 二进制矩阵
+    /// - Returns: 翻转图像后的结果
+    /// - Description: 时间复杂度: O(N^2) 空间复杂度: O(1)
+    func flipAndInvertImage(_ image: inout [[Int]]) {
+        let size = image.count
+        
+        for i in 0..<size {
+            var left = 0, right = size - 1
+            while left < right {
+                if image[i][right] == image[i][left] {
+                    image[i][right] ^= 1
+                    image[i][left] ^= 1
+                }
+                left += 1
+                right -= 1
+            }
+            if left == right {
+                image[i][left] ^= 1
+            }
+        }
+    }
+    
+    
+    //  MARK: 旋转数组中的最小数字
+    /// - Parameter numbers: 旋转数组
+    /// - Returns: 数组中的最小数字
+    func minArray_1(_ numbers: [Int]) -> Int {
+        for i in 0..<numbers.count {
+            if i < (numbers.count - 1) && numbers[i] > numbers[i + 1] {
+                return numbers[i + 1]
+            }
+        }
+        // 所有数字大小一致的场景
+        return numbers[0]
+    }
+    
+    /// 二分法
+    func minArray_2(_ numbers: [Int]) -> Int {
+        var left = 0, right = numbers.count - 1
+        var mid = left + (right - left)/2
+        while left < right {
+            if numbers[mid] < numbers[right] {
+                right = mid
+            } else if numbers[mid] > numbers[right] {
+                left = mid + 1
+            } else if numbers[mid] == numbers[right] {
+                
             }
         }
     }
