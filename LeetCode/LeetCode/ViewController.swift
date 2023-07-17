@@ -13,9 +13,12 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let heights = [1,8,6,2,5,4,8,4,9]
-        print(maxArea(heights));
-        print(twoSum(heights, target: 11))
+//        let heights = [1,8,6,2,5,4,8,4,9]
+//        print(maxArea(heights));
+//        print(twoSum(heights, target: 11))
+        
+        let s = "lrloseumgh"
+        print(reverseLeftWords_2(s, 6))
     }
     
     // 移除重复的元素
@@ -230,16 +233,84 @@ class ViewController: NSViewController {
     /// 二分法
     func minArray_2(_ numbers: [Int]) -> Int {
         var left = 0, right = numbers.count - 1
-        var mid = left + (right - left)/2
+        if right == 0 {
+            return numbers[0]
+        }
         while left < right {
+            var mid = left + (right - left)/2
             if numbers[mid] < numbers[right] {
                 right = mid
             } else if numbers[mid] > numbers[right] {
                 left = mid + 1
             } else if numbers[mid] == numbers[right] {
-                
+                right -= 1
             }
         }
+        return numbers[left]
     }
+    
+    //  MARK: 旋转字符串
+    /// - Parameters:
+    ///   - s: 即将旋转的字符串
+    ///   - goal: 目标字符串
+    /// - Returns: true or false
+    /// - Description: 若 s = 'abcde'，在旋转一次之后结果就是'bcdea' 。s 的 旋转操作 就是将 s 最左边的字符移动到最右边。
+    func rotateString(_ s: String, _ goal: String) -> Bool {
+        // 若s和goal的长度不一样，则s都不能得到goal
+        if s.count != goal.count {
+            return false
+        }
+        
+        return (s + s).contains(goal)
+    }
+    
+    func rotateString_KMP(_ s: String, _ goal: String) -> Bool {
+        // TODO: KMP算法待补充
+        return false
+    }
+    
+    
+    //  MARK: 左旋转字符串
+    /// - Parameters:
+    ///   - s: 字符串
+    ///   - n: 旋转字符个数
+    /// - Returns: 时间复杂度: O(N) 空间复杂度: O(N)
+    func reverseLeftWords_1(_ s: String, _ n: Int) -> String {
+        // 左旋转长度大于等于字符串长度，相当于不旋转
+        guard n < s.count else {
+            return s
+        }
+        let startIndex = s.index(s.startIndex, offsetBy: n)
+        let leftPart = String(s[startIndex...])
+        let rightPart = String(s[..<startIndex])
+        return leftPart + rightPart
+    }
+    
+    /// 列表遍历拼接
+    /// - Returns: 时间复杂度: O(N) 空间复杂度: O(N)
+    func reverseLeftWords_2(_ s: String, _ n: Int) -> String {
+        var res: [String] = []
+        var sList = s.map{ String($0) }
+        let sLen = s.count
+        
+        // 求余运算
+        for i in n..<(sLen+n) {
+            res.append(sList[i%sLen])
+        }
+        return res.joined()
+    }
+    
+    //  MARK: 替换空格
+    /// - Parameter s: 字符串
+    /// - Returns: 替换后的结果
+    func replaceSpace_1(_ s: String) -> String {
+        return s.replacingOccurrences(of: "", with: "%20")
+    }
+    
+    func replaceSpace_2(_ s: String) -> String {
+        return s.map{ $0 == " " ? "%20" : String($0) }.reduce("", +)
+    }
+    
+    
 }
 
