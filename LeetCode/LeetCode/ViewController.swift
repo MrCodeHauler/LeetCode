@@ -19,6 +19,8 @@ class ViewController: NSViewController {
         
         let s = "lrloseumgh"
         print(reverseLeftWords_2(s, 6))
+        
+        
     }
     
     // 移除重复的元素
