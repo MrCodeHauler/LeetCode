@@ -20,6 +20,7 @@ class ViewController: NSViewController {
         let s = "lrloseumgh"
         print(reverseLeftWords_2(s, 6))
         
+        print(exchange([1,2,3,4]))
         
     }
     
@@ -313,6 +314,66 @@ class ViewController: NSViewController {
         return s.map{ $0 == " " ? "%20" : String($0) }.reduce("", +)
     }
     
+    //  MARK: 调整数组顺序使奇数位于偶数前面
+    /// - Parameter nums: 数组
+    /// - Returns: 调整后的结果
+    /// - Description:  双指针法 => 时间复杂度：O(n) 空间复杂度：O(1)
+    func exchange_1(_ nums: [Int]) -> [Int] {
+        let len = nums.count
+        var res = [Int](repeating: 0, count: len)
+        var left = 0
+        var right = len - 1
+        for item in nums {
+            if item%2 == 1 {
+                // 奇数
+                res[left] = item
+                left += 1
+            } else {
+                // 偶数
+                res[right] = item
+                right -= 1
+            }
+        }
+        return res
+    }
     
+    /// - Description: 一次遍历 => 时间复杂度：O(n) 空间复杂度：O(1)
+    func exchange_2(_ nums: [Int]) -> [Int] {
+        var evenNums: [Int] = []
+        var oddNums: [Int] = []
+        for item in nums {
+            if item%2 == 1 {
+                // 奇数
+                oddNums.append(item)
+            } else {
+                // 偶数
+                evenNums.append(item)
+            }
+        }
+        return oddNums + evenNums
+    }
+    
+    /// - Description: 原地交换 => 时间复杂度：O(n) 空间复杂度：O(1)
+    func exchange_3(_ nums: [Int]) -> [Int] {
+        var res = nums
+        let len = res.count
+        var left = 0, right = len - 1
+        while left < right {
+            while left < right && res[left]%2 == 1 {
+                left += 1
+            }
+            while left < right && res[right]%2 == 0 {
+                right -= 1
+            }
+            if left < right {
+                let temp = res[left]
+                res[left] = res[right]
+                res[right] = temp
+                left += 1
+                right -= 1
+            }
+        }
+        return res
+    }
 }
 
