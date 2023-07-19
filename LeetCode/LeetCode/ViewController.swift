@@ -20,8 +20,6 @@ class ViewController: NSViewController {
         let s = "lrloseumgh"
         print(reverseLeftWords_2(s, 6))
         
-        print(exchange([1,2,3,4]))
-        
     }
     
     // 移除重复的元素
@@ -54,6 +52,20 @@ class ViewController: NSViewController {
                 if (nums[i] + nums[j] == target) {
                     return [i, j]
                 }
+            }
+        }
+        return []
+    }
+    
+    /// 哈希表法
+    func twoSum_1(_ nums: [Int], target: Int) -> [Int] {
+        var map = [Int: Int]()
+        for i in 0..<nums.count {
+            map[target - nums[i]] = i
+        }
+        for (index, item) in nums.enumerated() {
+            if let mapItem = map[item], mapItem != index {
+                return [mapItem, index]
             }
         }
         return []
@@ -375,5 +387,82 @@ class ViewController: NSViewController {
         }
         return res
     }
+    
+    
+    //  MARK: 和为s的两个数字
+    /// - Parameters:
+    ///   - nums: 递增排序的数组
+    ///   - target: 数字
+    /// - Returns: 和为target的任意一对数字
+    /// - Description: 双指针法 => 时间复杂度：O(n) 空间复杂度：O(1)
+    func twoSum_1(_ nums: [Int], _ target: Int) -> [Int] {
+        let len = nums.count
+        var left = 0, right = len - 1
+        while left < right {
+            if nums[left] + nums[right] > target {
+                right -= 1
+            }
+            if nums[left] + nums[right] < target {
+                left += 1
+            }
+            if nums[left] + nums[right] == target {
+                return [nums[left], nums[right]]
+            }
+        }
+        return []
+    }
+    
+    /// - Description: 暴力解决法 => 时间复杂度：O(n^2) 空间复杂度：O(1)
+    func twoSum_2(_ nums: [Int], _ target: Int) -> [Int] {
+        let len = nums.count
+        for i in 0..<len {
+            for j in (i+1)..<len {
+                if nums[i] + nums[j] == target {
+                    return [nums[i], nums[j]]
+                }
+            }
+        }
+        return []
+    }
+    
+    
+    func twoSum_3(_ nums: [Int], _ target: Int) -> [Int] {
+        let len = nums.count
+        if len < 2 {
+            return []
+        }
+        if len == 2 {
+            return (nums.first! + nums.last!) == target ? nums : []
+        }
+        var map = [Int : Int]()
+        for i in 0..<len {
+            if map[target - nums[i]] == nil {
+                map[target - nums[i]] = i
+            }
+        }
+        for item in nums {
+            if let mapItem = map[item] {
+                return [item, nums[mapItem]]
+            }
+        }
+        return []
+    }
+    
+    /// - Description: 二分法 => 时间复杂度：O(NLogN) 空间复杂度：O(1)
+//    func twoSum_3(_ nums: [Int], _ target: Int) -> [Int] {
+//        let len = nums.count
+//        var left = 0, right = len - 1
+//        while left < right {
+//            var mid = left + (right - left)/2
+//            if nums[mid] >= target - nums[left] {
+//                right = mid
+//            } else if nums[mid] < target - nums[left] {
+//                left = mid + 1
+//            } else {
+//                return [nums[left], nums[right]]
+//            }
+//        }
+//        return []
+//    }
 }
 
