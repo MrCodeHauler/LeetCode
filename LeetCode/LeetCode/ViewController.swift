@@ -18,8 +18,11 @@ class ViewController: NSViewController {
 //        print(twoSum(heights, target: 11))
         
         let s = "lrloseumgh"
-        print(reverseLeftWords_2(s, 6))
+//        print(reverseLeftWords_2(s, 6))
         
+        print(threeSum([-1, 0, 1, 2, -1, -4]));
+        print(threeSum([0,1,1]));
+        print(threeSum([0,0,0]));
     }
     
     // 移除重复的元素
@@ -69,11 +72,6 @@ class ViewController: NSViewController {
             }
         }
         return []
-    }
-    
-    // 三数之和
-    func threeSum(_ nums: [Int], target: Int) {
-        
     }
     
     // pow(x, n)
@@ -464,5 +462,49 @@ class ViewController: NSViewController {
 //        }
 //        return []
 //    }
+    
+    
+    //  MARK: 三数之和
+    /// - Parameter nums: 数组
+    /// - Returns: <#description#>
+    func threeSum(_ nums: [Int]) -> [[Int]] {
+        let sorted = nums.sorted()
+        var res: [[Int]] = []
+        let len = sorted.count
+        if len < 3 {
+            return res
+        }
+        for (index, item) in sorted.enumerated() {
+            if item > 0 {
+                // 若当前item大于0，因为已排序，则后面不可能有三个数和等于0
+                return res
+            }
+            // 去重，当起始的值等于前一个元素，那么得到的结果将会和前一次相同
+            if index > 0 && item == sorted[index - 1] {
+                continue
+            }
+            var left = index + 1, right = len - 1
+            while left < right {
+                if item + sorted[left] + sorted[right] == 0 {
+                    res.append([item, sorted[left], sorted[right]])
+                    // 去重，因为 i 不变，当此时Left取的数的值与后一个数相同，所以不用在计算，直接跳
+                    while left < right && sorted[left] == sorted[left + 1] {
+                        left = left + 1
+                    }
+                    // 去重，因为 i 不变，当此时Right取的数的值与前一个数相同，所以不用在计算，直接跳
+                    while left < right && sorted[right] == sorted[right - 1] {
+                        right = right - 1
+                    }
+                    left = left + 1
+                    right = right - 1
+                } else if item + sorted[left] + sorted[right] > 0 {
+                    right = right - 1
+                } else {
+                    left = left + 1
+                }
+            }
+        }
+        return res
+    }
 }
 
