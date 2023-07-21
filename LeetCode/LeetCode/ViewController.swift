@@ -20,9 +20,11 @@ class ViewController: NSViewController {
         let s = "lrloseumgh"
 //        print(reverseLeftWords_2(s, 6))
         
-        print(threeSum([-1, 0, 1, 2, -1, -4]));
-        print(threeSum([0,1,1]));
-        print(threeSum([0,0,0]));
+//        print(threeSum([-1, 0, 1, 2, -1, -4]));
+//        print(threeSum([0,1,1]));
+//        print(threeSum([0,0,0]));
+        
+        print(reverseWords("a good   example"))
     }
     
     // 移除重复的元素
@@ -466,7 +468,7 @@ class ViewController: NSViewController {
     
     //  MARK: 三数之和
     /// - Parameter nums: 数组
-    /// - Returns: <#description#>
+    /// - Returns: 时间复杂度：O(N^2)  数组排序O(NLogN) + 遍历数组O(N) + 双指针遍历O(n) = O(N^2) 空间复杂度：O(1)
     func threeSum(_ nums: [Int]) -> [[Int]] {
         let sorted = nums.sorted()
         var res: [[Int]] = []
@@ -505,6 +507,16 @@ class ViewController: NSViewController {
             }
         }
         return res
+    }
+    
+    //  MARK: 翻转单词顺序
+    /// - Parameter s: 字符串
+    /// - Returns: 翻转后的字符串
+    /// - Description: 时间复杂度: O(N) 空间复杂度: O(N)
+    func reverseWords(_ s: String) -> String {
+        var sList = s.components(separatedBy: " ").filter{ $0.count > 0 }.map{  $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        sList.reverse()
+        return sList.joined(separator: " ")
     }
 }
 
